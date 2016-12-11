@@ -5,26 +5,26 @@ import Data.Text (Text)
 import Data.Text.Encoding (decodeUtf8With)
 
 -- | Our token type, a chunk of text we pulled from a Rust source, annotated with
--- some basic information on it's role in the input stream. To avoid confusion and
--- annoyance, we parametrize over the type of position information.
+-- some basic information on it's role and position in the input stream. To avoid
+-- confusion and annoyance, we parametrize over the type of position information.
 data Token pos = Token pos TokenType Text
     deriving (Show, Eq)
 
 -- | Types of tokens we distinguish in the input stream.
 data TokenType
-    = SpaceToken
-    | CommentToken
-    | CharLiteralToken
-    | ByteLiteralToken
-    | StringLiteralToken
-    | ByteStringLiteralToken
-    | BoolLiteralToken
-    | DecimalLiteralToken
-    | HexLiteralToken
-    | OctalLiteralToken
-    | BinaryLiteralToken
-    | FloatingLiteralToken
-    | IdentifierToken
+    = SpaceToken -- ^ any amount and kind of whitespace
+    | CommentToken -- ^ text in a comment
+    | CharLiteralToken -- ^ character literals
+    | ByteLiteralToken -- ^ byte literals
+    | StringLiteralToken -- ^ string literals
+    | ByteStringLiteralToken -- ^ byte string literals
+    | BoolLiteralToken -- ^ boolean value literals
+    | DecimalLiteralToken -- ^ decimial integer literals
+    | HexLiteralToken -- ^ hexadecimal integer literals
+    | OctalLiteralToken -- ^ octal integer literals
+    | BinaryLiteralToken -- ^ binary integer literals
+    | FloatingLiteralToken -- ^ floating point number literals
+    | IdentifierToken -- ^ identifiers
     deriving (Show, Eq)
 
 -- | Construct a token given a type and a position, seemlessly handling data
