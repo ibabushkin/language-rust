@@ -1,12 +1,12 @@
 module Language.Rust.Token where
 
-import Data.ByteString (ByteString)
 import qualified Data.ByteString.Lazy as L
 import Data.Text (Text)
 import Data.Text.Encoding (decodeUtf8With)
 
 -- | Our token type, a chunk of text we pulled from a Rust source, annotated with
--- some basic information on it's role in the input stream.
+-- some basic information on it's role in the input stream. To avoid confusion and
+-- annoyance, we parametrize over the type of position information.
 data Token pos = Token pos TokenType Text
     deriving (Show, Eq)
 
