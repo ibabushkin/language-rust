@@ -1,4 +1,5 @@
 {
+{-# LANGUAGE OverloadedStrings #-}
 module Language.Rust.Lexer where
 }
 
@@ -28,9 +29,8 @@ $ascii = [\0 - \127]
 
 -- string literals (any sequence of characters enclosed in double quotes, possibly
 -- including escaped double quotes)
--- TODO: what about multiline literals with (or without) escapes?
 -- TODO: raw literals
-@string = \" (. # \" | \\\" | @byte_escape | @unicode_escape)* \"
+@string = \" (. # \" | \\\" | @byte_escape | @unicode_escape | \n)* \"
 @bytestring = b\" ($ascii | @byte_escape) \"
 
 -- identifiers
@@ -53,4 +53,16 @@ $ident_continue = [a-zA-Z_0-9]
 @floating_point = $decimaldigit+ (\. $decimaldigit*)? (E ("-" | "+") $decimaldigit+)?
 
 tokens :-
-    .* ;
+    $white+ { flip (flip (,) . const " ") }
+    @comment { (,) }
+    @character { (,) }
+    @byte { (,) }
+    @string { (,) }
+    @bytestring { (,) }
+    @identifier { (,) }
+    @bool { (,) }
+    @decimal_integer { (,) }
+    @hex_integer { (,) }
+    @octal_integer { (,) }
+    @binary_integer { (,) }
+    @floating_point { (,) }

@@ -16,7 +16,10 @@ cabal-version:       >=1.10
 library
   hs-source-dirs:      src
   exposed-modules:     Language.Rust
-  build-depends:       base >= 4.7 && < 5
+                     , Language.Rust.Lexer
+  build-depends:       array >= 0.5
+                     , base >= 4.7 && < 5
+                     , bytestring >= 0.10
   default-language:    Haskell2010
 
 test-suite language-rust-test
