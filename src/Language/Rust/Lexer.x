@@ -1,6 +1,8 @@
 {
 {-# LANGUAGE OverloadedStrings #-}
 module Language.Rust.Lexer where
+
+import Language.Rust.Token (token, TokenType(..))
 }
 
 -- we want position info and efficient bytestring input
@@ -53,16 +55,16 @@ $ident_continue = [a-zA-Z_0-9]
 @floating_point = $decimaldigit+ (\. $decimaldigit*)? (E ("-" | "+") $decimaldigit+)?
 
 tokens :-
-    $white+ { flip (flip (,) . const " ") }
-    @comment { (,) }
-    @character { (,) }
-    @byte { (,) }
-    @string { (,) }
-    @bytestring { (,) }
-    @identifier { (,) }
-    @bool { (,) }
-    @decimal_integer { (,) }
-    @hex_integer { (,) }
-    @octal_integer { (,) }
-    @binary_integer { (,) }
-    @floating_point { (,) }
+    $white+ { token SpaceToken }
+    @comment { token CommentToken }
+    @character { token CharLiteralToken }
+    @byte { token ByteLiteralToken }
+    @string { token StringLiteralToken }
+    @bytestring { token ByteStringLiteralToken }
+    @bool { token BoolLiteralToken }
+    @decimal_integer { token DecimalLiteralToken }
+    @hex_integer { token HexLiteralToken }
+    @octal_integer { token OctalLiteralToken }
+    @binary_integer { token BinaryLiteralToken }
+    @floating_point { token FloatingLiteralToken }
+    @identifier { token IdentifierToken }
