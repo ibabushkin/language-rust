@@ -4,7 +4,7 @@ module LexerSpec where
 import Test.Hspec
 -- import Test.QuickCheck
 
-import Language.Rust.Lexer (alexScanTokens, AlexPn(..))
+import Language.Rust.Lexer (alexScanTokens, AlexPosn(..))
 import Language.Rust.Token
 
 -- | main spec
