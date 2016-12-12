@@ -62,9 +62,9 @@ tokens :-
     @string { token StringLiteralToken }
     @bytestring { token ByteStringLiteralToken }
     @bool { token BoolLiteralToken }
-    @decimal_integer { token DecimalLiteralToken }
-    @hex_integer { token HexLiteralToken }
-    @octal_integer { token OctalLiteralToken }
-    @binary_integer { token BinaryLiteralToken }
-    @floating_point { token FloatingLiteralToken }
+    @decimal_integer @integer_suffix { token DecimalLiteralToken }
+    @hex_integer @integer_suffix { token HexLiteralToken }
+    @octal_integer @integer_suffix { token OctalLiteralToken }
+    @binary_integer @integer_suffix { token BinaryLiteralToken }
+    @floating_point @floating_point_suffix { token FloatingLiteralToken }
     @identifier { token IdentifierToken }
