@@ -19,11 +19,11 @@ $ascii = [\0 - \127]
 @comment = "//" .* | "/*" (. | \n)* "*/"
 
 -- different escapes
-@byte_escape = "\x" $hexdigit{2} | "\n" | "\r" | "\t" | "\\" | "\0"
+@byte_escape = \x [0-9a-fA-F]{2} | \n | \r | \t | \\ | \0
 @unicode_escape = "\u{" $hexdigit{1,6} "}"
 
 -- character literals (any character or an escaped single quote in single quotes)
-@character = ' (. # ' | \\\' | @byte_escape | @unicode_escape) '
+@character = ' (. # ' | \' | @byte_escape | @unicode_escape) '
 
 -- byte literals
 -- TODO: are we sure? ;)

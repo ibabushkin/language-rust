@@ -16,6 +16,7 @@ spec = describe "Language.Rust.Lexer" $ do
     it "recognizes whitespace" $
         alexScanTokens " \t\n\t" == [Token (AlexPn 0 1 1) SpaceToken " \t\n\t"]
     commentSpec
+    charByteSpec
     boolLiteralSpec
     numberLiteralSpec
     identifierSpec
