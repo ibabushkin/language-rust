@@ -13,8 +13,12 @@ import Test.Hspec
 -- | main spec
 spec :: Spec
 spec = describe "Language.Rust.Lexer" $ do
+    it "recognizes whitespace" $
+        alexScanTokens " \t\n\t" == [Token (AlexPn 0 1 1) SpaceToken " \t\n\t"]
     commentSpec
+    boolLiteralSpec
     numberLiteralSpec
+    identifierSpec
 
 commentSpec :: Spec
 commentSpec = describe "comment tokenization" $ do
@@ -41,10 +45,30 @@ commentSpec = describe "comment tokenization" $ do
             , Token (AlexPn 18 2 8) IdentifierToken "b"
             ]
 
+charByteSpec :: Spec
+charByteSpec = describe "character and byte tokenization" $
+    it "accepts ordinary and escaped characters" $
+        alexScanTokens "'a' '\'' '\x8f' '\n'" ==
+            [ Token (AlexPn 0 1 1) CharLiteralToken "'a'"
+            , Token (AlexPn 3 1 4) SpaceToken " "
+            , Token (AlexPn 4 1 5) CharLiteralToken "'\''"
+            , Token (AlexPn 8 1 9) SpaceToken " "
+            , Token (AlexPn 9 1 10) CharLiteralToken "'\\x8f'"
+            , Token (AlexPn 15 1 16) SpaceToken " "
+            , Token (AlexPn 16 1 17) CharLiteralToken "'\\n'"
+            ]
+
+boolLiteralSpec :: Spec
+boolLiteralSpec = describe "bool tokenization *yawn*" $
+    it "works with the two literals we have *yawn again*" $
+        alexScanTokens "true false" ==
+            [ Token (AlexPn 0 1 1) BoolLiteralToken "true"
+            , Token (AlexPn 4 1 5) SpaceToken " "
+            , Token (AlexPn 5 1 6) BoolLiteralToken "false"
+            ]
+
 numberLiteralSpec :: Spec
 numberLiteralSpec = describe "number tokenization" $ do
-    it "recognizes whitespace" $
-        alexScanTokens " \t\n\t" == [Token (AlexPn 0 1 1) SpaceToken " \t\n\t"]
     it "recognizes different integer literals" $
         alexScanTokens "0xab2_c1 0o_22_3553 0b1101_010 1234u32" ==
             [ Token (AlexPn 0 1 1) HexLiteralToken "0xab2_c1"
@@ -66,4 +90,17 @@ numberLiteralSpec = describe "number tokenization" $ do
             , Token (AlexPn 22 1 23) FloatingLiteralToken "1."
             , Token (AlexPn 24 1 25) SpaceToken " "
             , Token (AlexPn 25 1 26) FloatingLiteralToken "1f64"
+            ]
+
+identifierSpec :: Spec
+identifierSpec = describe "identifier tokenization" $
+    it "works according to spec" $
+        alexScanTokens "abc a a_ _1a" ==
+            [ Token (AlexPn 0 1 1) IdentifierToken "abc"
+            , Token (AlexPn 3 1 4) SpaceToken " "
+            , Token (AlexPn 4 1 5) IdentifierToken "a"
+            , Token (AlexPn 5 1 6) SpaceToken " "
+            , Token (AlexPn 6 1 7) IdentifierToken "a_"
+            , Token (AlexPn 8 1 9) SpaceToken " "
+            , Token (AlexPn 9 1 10) IdentifierToken "_1a"
             ]
