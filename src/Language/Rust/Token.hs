@@ -24,6 +24,7 @@ data TokenType
     | OctalLiteralToken -- ^ octal integer literals
     | BinaryLiteralToken -- ^ binary integer literals
     | FloatingLiteralToken -- ^ floating point number literals
+    | PathToken -- ^ path
     | IdentifierToken -- ^ identifiers
     deriving (Show, Eq)
 

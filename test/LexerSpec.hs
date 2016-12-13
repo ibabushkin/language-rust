@@ -19,6 +19,7 @@ spec = describe "Language.Rust.Lexer" $ do
     charByteSpec
     boolLiteralSpec
     numberLiteralSpec
+    pathSpec
     identifierSpec
 
 commentSpec :: Spec
@@ -92,6 +93,21 @@ numberLiteralSpec = describe "number tokenization" $ do
             , Token (AlexPn 24 1 25) SpaceToken " "
             , Token (AlexPn 25 1 26) FloatingLiteralToken "1f64"
             ]
+
+pathSpec :: Spec
+pathSpec = describe "path tokenization" $ do
+    it "recognizes simple paths" $
+        alexScanTokens "abc::def::ghi" ==
+            [ Token (AlexPn 0 1 1) PathToken "abc::def::ghi" ]
+    it "recognizes absolute paths from the crate root" $
+        alexScanTokens "::abc::def::ghi" ==
+            [ Token (AlexPn 0 1 1) PathToken "::abc::def::ghi" ]
+    it "allows for type parametrization of path components" $
+        alexScanTokens "abc::def<A, B>::ghi<'a>" ==
+            [ Token (AlexPn 0 1 1) PathToken "abc::def<A, B>::ghi<'a>" ]
+    it "allows for type parametrization in the last path component" $
+        alexScanTokens "abc::def<A, B>::ghi::<T>" ==
+            [ Token (AlexPn 0 1 1) PathToken "abc::def<A, B>::ghi::<T>" ]
 
 identifierSpec :: Spec
 identifierSpec = describe "identifier tokenization" $

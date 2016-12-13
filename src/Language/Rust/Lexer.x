@@ -54,6 +54,10 @@ $ident_continue = [a-zA-Z_0-9]
 @binary_integer = "0b" $binarydigit+
 @floating_point = $decimaldigit+ (\. $decimaldigit*)? (E ("-" | "+") $decimaldigit+)?
 
+-- paths
+@type_param = "<" .+ ">"
+@path = (::)? (@identifier @type_param? ::)+ (@identifier @type_param? | @type_param)
+
 tokens :-
     $white+ { token SpaceToken }
     @comment { token CommentToken }
@@ -67,4 +71,5 @@ tokens :-
     @octal_integer @integer_suffix { token OctalLiteralToken }
     @binary_integer @integer_suffix { token BinaryLiteralToken }
     @floating_point @floating_point_suffix { token FloatingLiteralToken }
+    @path { token PathToken }
     @identifier { token IdentifierToken }
