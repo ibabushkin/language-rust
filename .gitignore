@@ -3,3 +3,5 @@
 *.o
 dist
 .stack-work
+Cargo.lock
+target
