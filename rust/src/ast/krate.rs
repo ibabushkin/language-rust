@@ -13,6 +13,11 @@ pub struct Krate {
     pub module: Module,
 }
 
+/// A Rust Module as parsed from the file.
 pub struct Module {
+    pub items: Vec<Item>,
+}
+
+pub struct Item {
 
 }

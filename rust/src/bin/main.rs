@@ -1,4 +1,4 @@
-extern crate language_rust;
+extern crate simple_ast;
 
 fn main() {
 
