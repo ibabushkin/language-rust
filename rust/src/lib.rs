@@ -1,6 +1,10 @@
 extern crate syntex_syntax as syntax;
 extern crate syntex_errors as syntax_errors;
 
+pub mod ast;
+
+use ast::krate;
+/*
 use std::rc::Rc;
 
 use syntax::codemap::CodeMap;
@@ -21,6 +25,7 @@ pub fn test_main() {
 
     println!("parse result: {:?}", result);
 }
+*/
 
 #[cfg(test)]
 mod tests {
